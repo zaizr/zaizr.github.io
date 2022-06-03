@@ -1,5 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
-import { getDatabase, ref, set, get, child, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+
+const chatSpace = document.getElementById('sign-in');
+if (chatSpace)
+{
+    chatSpace.style.display = "none";
+}
 
 const firebaseConfig = {
     apiKey: "AIzaSyCmXvfCS7CMvrYqKxJ6dJPztGVq2tj6t5A",
@@ -13,83 +20,112 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const parent = document.getElementById("msg-space");
+const auth = getAuth();
+const provider = new GoogleAuthProvider(); 
+const google = document.getElementById('google');
+const database = getDatabase();
 
-let username = prompt("Enter a name:");
+let username = "";
 
-if (username === "")
+if (google)
 {
-    username = 'wa7d ma ya9dr ya3rf wsmo';
-}
-
-document.getElementById("sender").onclick = function()
-{
-    const database = getDatabase();
-
-    let message = document.getElementById("msg").value;
-
-    if (message === "") return;
-
-    let messageId = generateKey();
-
-    const refrence = ref(database, 'messages/'+username+'/'+messageId);
-
-    set(refrence, {
-        Username: username,
-        Message: message,
-        MessageId: messageId
-    });
-
-    let librr = document.createElement("li");
-    librr.innerHTML += '<b>' + username + '</b>: ' + message;
-    parent.appendChild(librr);
-
-    document.getElementById("msg").value = "";
-};
-        
-let num = 0;
-
-window.onload = function()
-{
-    const dbRef = ref(getDatabase(), 'messages/');
-
-    onValue(dbRef, (snapshot) => {
-        if (num > 0)
-        {
-            return;
-        }
-
-        snapshot.forEach((childSnapshot) => 
-        {
-            let dbRef2 = childSnapshot.key;
-
-            onValue(ref(getDatabase(), 'messages/' + dbRef2), (snapshot2) => {
-                snapshot2.forEach((childSnapshot2) =>
-                {
-                    const childKey = childSnapshot2.key;
-            
-                    const starCountRef = ref(getDatabase(), 'messages/' + dbRef2 + '/' + childKey);
-
-                    onValue(starCountRef, (snapshott) => {
-                        const data = snapshott.val();
-
-                        let libb = document.createElement("li");
-                        libb.innerHTML += '<b>'+ data.Username +'</b>: ' + data.Message;
-                        parent.appendChild(libb);
-                    });
-                });
-            });
+    google.onclick = function()
+    {
+        signInWithPopup(auth, provider)
+        .then((result) => {
+            username = result.user.displayName;
+            chatSpace.style.display = "block";
+            google.style.display = "none";
+        }).catch((error) => {
+            const errorMessage = error.message;
+            alert(errorMessage);
         });
-        num++;
-    })   
+    }
 }
+
+const messageBox = document.getElementById('msg');
+let shiftDown = false;
+
+messageBox.onfocus = function()
+{
+    document.addEventListener('keypress', function (e)
+    {
+        if(e.keyCode == 13)
+        {
+            e.preventDefault();
+            let message = document.getElementById("msg").value;
+    
+            if (message === "") return;
+        
+            let messageId = generateKey();
+        
+            const refrence = ref(database, 'messages/'+username+'/'+messageId);
+        
+            set(refrence, {
+                Username: username,
+                Message: message,
+                MessageId: messageId
+            });
+        
+            document.getElementById("msg").value = "";
+        }   
+    });     
+}
+
+document.addEventListener('keydown',  function (e) {
+    if(e.keyCode == 16) shiftDown = true;
+});
+
+document.addEventListener('keyup' , function (e) {
+    if(e.keyCode == 16) shiftDown = false;
+});
 
 function generateKey() {
     var length = 16,
-        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-        retVal = "";
+    charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    retVal = "";
     for (var i = 0, n = charset.length; i < length; ++i) {
         retVal += charset.charAt(Math.floor(Math.random() * n));
     }
     return retVal;
 }
+
+const parent = document.getElementById("msg-space");
+        
+let final = '';
+
+window.setInterval(
+    function()
+    {
+        const dbRef = ref(getDatabase(), 'messages/');
+
+        onValue(dbRef, (snapshot) => {
+            snapshot.forEach((childSnapshot) => 
+            {
+                let dbRef2 = childSnapshot.key;
+    
+                onValue(ref(getDatabase(), 'messages/' + dbRef2), (snapshot2) => {
+                    snapshot2.forEach((childSnapshot2) =>
+                    {
+                        const childKey = childSnapshot2.key;
+                        const starCountRef = ref(getDatabase(), 'messages/' + dbRef2 + '/' + childKey);
+
+                        onValue(starCountRef, (snapshott) => {
+                            const data = snapshott.val();
+                            let msg = '<li><b>' + data.Username + '</b>: ' + data.Message + '<span>' + data.MessageId + '</span></li>';
+                            if (final.includes(msg))
+                            {
+                            }
+                            else
+                            {
+                                final += msg;
+                                console.log(msg);
+                            }
+                        });
+                    });
+                });
+            });
+        })
+        
+        parent.innerHTML = final;
+    }, 500);

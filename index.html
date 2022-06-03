@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="css/chat.css">
+		<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Mukta:wght@300&display=swap" rel="stylesheet">
+		<title>WENS | Messages</title>
+    </head>
+    <body>
+        <div class="Container" id="container">
+            <div class="Login-Button">
+                <button class="Google-Button" id='google'>Sign in with google</button>
+            </div>
+            <div class="Chatting-Space" id='sign-in'>
+                <div class="Main-Text">
+                    Contact Sellers Around The World
+                </div>
+                <div class="Messages-Space">
+                    <ul id="msg-space">
+                    </ul>
+                </div>
+                <div class="Message-Inputs">
+                    <input class="Message-Type" type="text" id="msg" placeholder="Enter a message">
+                </div>
+            </div>
+        </div>
+        <script type="module" src="src/chat.js"></script>
+        <script src="src/animation.js"></script>
+    </body>
+</html>

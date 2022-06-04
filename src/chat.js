@@ -26,6 +26,8 @@ const google = document.getElementById('google');
 const database = getDatabase();
 
 let username = "";
+let photoUrl = "";
+let loggedIn = false;
 
 if (google)
 {
@@ -34,6 +36,8 @@ if (google)
         signInWithPopup(auth, provider)
         .then((result) => {
             username = result.user.displayName;
+            photoUrl = result.user.photoURL;
+            loggedIn = true;
             chatSpace.style.display = "block";
             google.style.display = "none";
         }).catch((error) => {
@@ -50,7 +54,7 @@ messageBox.onfocus = function()
 {
     document.addEventListener('keypress', function (e)
     {
-        if(e.keyCode == 13)
+        if(e.keyCode == 13 && !shiftDown)
         {
             e.preventDefault();
             let message = document.getElementById("msg").value;
@@ -58,13 +62,18 @@ messageBox.onfocus = function()
             if (message === "") return;
         
             let messageId = generateKey();
+
+            let date = new Date();
+            date = date.getTime();
         
             const refrence = ref(database, 'messages/'+username+'/'+messageId);
         
             set(refrence, {
                 Username: username,
                 Message: message,
-                MessageId: messageId
+                MessageId: messageId,
+                Date: date,
+                PhotoUrl: photoUrl
             });
         
             document.getElementById("msg").value = "";
@@ -90,42 +99,77 @@ function generateKey() {
     return retVal;
 }
 
-const parent = document.getElementById("msg-space");
-        
-let final = '';
+const parentFriend = document.getElementById('friend');
+const parentMe = document.getElementById('me') 
+
+let finalMe = '';
+let finalFriend = '';
+let finalImageMe = '';
+let finalImageFrined = '';
 
 window.setInterval(
     function()
     {
-        const dbRef = ref(getDatabase(), 'messages/');
+        if (loggedIn)
+        {
+            const dbRef = ref(getDatabase(), 'messages/');
 
-        onValue(dbRef, (snapshot) => {
-            snapshot.forEach((childSnapshot) => 
-            {
-                let dbRef2 = childSnapshot.key;
+            onValue(dbRef, (snapshot) => {
+                snapshot.forEach((childSnapshot) => 
+                {
+                    let dbRef2 = childSnapshot.key;
+        
+                    onValue(ref(getDatabase(), 'messages/' + dbRef2), (snapshot2) => {
+                        snapshot2.forEach((childSnapshot2) =>
+                        {
+                            const childKey = childSnapshot2.key;
+                            const starCountRef = ref(getDatabase(), 'messages/' + dbRef2 + '/' + childKey);
     
-                onValue(ref(getDatabase(), 'messages/' + dbRef2), (snapshot2) => {
-                    snapshot2.forEach((childSnapshot2) =>
-                    {
-                        const childKey = childSnapshot2.key;
-                        const starCountRef = ref(getDatabase(), 'messages/' + dbRef2 + '/' + childKey);
+                            onValue(starCountRef, (snapshott) => {
+                                const data = snapshott.val();
+                                
+                                let myMessage = "";
+                                let friendMessage = "";
+                                
+                                if (data.Username === username)
+                                {
+                                    let myMessage = '<div class="my-text"><li><b>' + data.Username + '</b>: ' + data.Message + '<span>' + data.MessageId + '</span></li></div>';
+    
+                                    if (!finalMe.includes(myMessage))
+                                    {
+                                        finalMe += myMessage;
+                                    }
+                                    if (finalImageMe === "")
+                                    {
+                                        const img = document.createElement('img');
+                                        img.style.backgroundImage = 'url(' + data.PhotoUrl + ')';
+                                        parentMe.appendChild(img);
+                                        finalImageFrined = img.innerHTML;
+                                    }
+                                }
+                                else
+                                {
+                                    let friendMessage = '<div class="friend-text"><li><b>' + data.Username + '</b>: ' + data.Message + '<span>' + data.MessageId + '</span></li></div>';
+                                    
+                                    if (!finalFriend.includes(friendMessage))
+                                    {
+                                        finalFriend += friendMessage;
+                                    }
 
-                        onValue(starCountRef, (snapshott) => {
-                            const data = snapshott.val();
-                            let msg = '<li><b>' + data.Username + '</b>: ' + data.Message + '<span>' + data.MessageId + '</span></li>';
-                            if (final.includes(msg))
-                            {
-                            }
-                            else
-                            {
-                                final += msg;
-                                console.log(msg);
-                            }
+                                    if (finalImageFrined === null)
+                                    {
+                                        const img = document.createElement('img');
+                                        img.style.backgroundImage = 'url(' + data.PhotoUrl + ')';
+                                        parentMe.appendChild(img);
+                                        finalImageFrined = img.innerHTML;
+                                    }
+                                }
+                            });
                         });
                     });
                 });
-            });
-        })
-        
-        parent.innerHTML = final;
+            })
+            parentMe.innerHTML = finalMe;
+            parentFriend.innerHTML = finalFriend;
+        }
     }, 500);

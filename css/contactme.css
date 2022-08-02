@@ -1,0 +1,30 @@
+.Container {
+    width: 100vw;
+    height: calc(100vh - 100px);
+    background-color: var(--black);
+    color: var(--white);
+    text-align: center;
+}
+
+.Socials {
+    padding: 10px 0;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.Social {
+    margin: 10px;
+    width: 75px;
+    height: 75px;
+    border-radius: 10px;
+    color: var(--white);
+    background-color: var(--black2);
+    cursor: pointer;
+    font-size: 2rem;
+    transition: 200ms ease-in-out;
+}
+
+.Social:hover {
+    background-color: var(--white);
+    color: var(--black);
+}

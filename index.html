@@ -1,104 +1,54 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Main-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koua Mouhamed Anis | Index</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <!--Imports-->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <!--CSS-->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/public.css">
+    <!--Others-->
+    <title>Koua Mouhamed Anis | Home</title>
 </head>
 <body>
-    <div id="loading">
-        <div class="Loader">    
+    <img class="bg" src="img/bg.jpg">
+    <div class="Transition Center"><h1>:D</h1></div>
+    <div class="MenuContainer">
+        <i class="Exit Center bi bi-fullscreen-exit"></i>
+        <a class="MenuElement Center" onclick="Replace('index.html')">Home</a>
+        <a class="MenuElement Center" onclick="Replace('skills.html')">My Skills</a>
+        <a class="MenuElement Center" onclick="Replace('projects.html')">My Projects</a>
+        <a class="MenuElement Center" onclick="Replace('contactme.html')">Contact Me</a>
+    </div>
+    <div class="NavBarContainer">
+        <div class="NavBar Center">
+            <i class="Center MenuOpener bi bi-three-dots"></i>
         </div>
     </div>
-    <div class="Container" id="page" style="display: none;">
-        <div class="RealMenu">
-            <div class="CloseMenu" id="menuClose">&times</div>
-            <ul>
-                <li>
-                    <a href="">Home</a>
-                </li>
-                <li>
-                    <a href="projects.html">Projects</a>
-                </li>
-                <li>
-                    <a href="links.html">My Links</a>
-                </li>
-                <li>
-                    <a onclick="javascript:Hide()" href="#about">About me</a>
-                </li>
-                <li>
-                    <a onclick="javascript:Hide()" href="#contact">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <div class="NavBar">
-            <span class="Menu" id="menuBtn">&#9776;</span>
-            <ul>
-                <li>
-                    <a href="">Home</a>
-                </li>
-                <li>
-                    <a href="projects.html">Projects</a>
-                </li>
-                <li>
-                    <a href="links.html">My Links</a>
-                </li>
-                <li>
-                    <a href="index.html#about">About me</a>
-                </li>
-                <li>
-                    <a href="index.html#contact">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <div class="One">
-            <div class="MainText">
-                Koua Mouhamed Anis
+    <div class="Container">
+        <main class="CenterY Page">
+            <div style="margin-bottom: 10vh;">
+                <h1 class="MainTitle Link">
+                    <span class="Char">H</span><span class="Char">i</span><span class="Char">,</span><br>
+                    <span class="Char">I</span><span class="Char">'</span><span class="Char">m</span>
+                    <span class="Char">M</span><span class="Char">o</span><span class="Char">h</span><span class="Char">a</span><span class="Char">m</span><span class="Char">e</span><span class="Char">d</span>
+                    <span class="Char">A</span><span class="Char">n</span><span class="Char">i</span><span class="Char">s</span>
+                    <span class="Char">K</span><span class="Char">O</span><span class="Char">U</span><span class="Char">A</span>
+                </h1>
+                <p>A Full-Stack Developer</p><br>
+                <div class="Button Link Center" onclick="Show()">
+                See More
+                </div>
             </div>
-        </div>
-        <div class="Two" id="about">
-            <div class="AboutMe">
-                <h2>
-                    About Me
-                </h2>
-                <p>
-                    Ana howa anis hhh ma3labalich wch nktb hna al connexion ra7t w rahi m9awda 3lya la kont tchof f hada a text aboni <a href="http://instagram.com/zaizrx/" style="color: #fff; text-decoration: underline; font-weight: bolder;">HNA</a> hia normalement rak maboni bs7 ma3lich zid aboni a hia l wa7d yro7 yor9d
-                </p>
-            </div>
-        </div>
-        <div class="Three">
-            <div class="ContactMe" id="contact">
-                <form action="index.php" method="post" class="ContactMe">
-                    <h2>
-                        Contact Me
-                    </h2>
-                    <div class="Fields">
-                        <div class="Email Field">
-                            <input type="email" name="email" id="email" required tabindex="1" placeholder="Email ...">
-                        </div>
-                        <div class="Name Field">
-                            <input type="text" name="name" id="name" required tabindex="2" placeholder="Full Name ...">
-                        </div>
-                        <div class="Subject Field">
-                            <input type="text" name="subject" id="subject" required tabindex="3" placeholder="Subject ...">
-                        </div>
-                        <div class="Description Field">
-                            <textarea name="description" id="description" maxlength="200" required tabindex="4" placeholder="Description ..."></textarea>
-                        </div>
-                        <div class="Submit">
-                            <button type="submit">Submit</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="Foorter"></div>
+        </main>
     </div>
+    <!--JS-->
+    <script src="js/index.js"></script>
+    <script src="js/menu.js"></script>
 </body>
-<script src="js/index.js"></script>
-<script src="js/loading.js"></script>
-<script src="js/menu.js"></script>
 </html>

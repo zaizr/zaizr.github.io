@@ -1,0 +1,94 @@
+.NavBarContainer {
+    position: relative;
+    width: 100%;
+    height: 100px;
+}
+
+.NavBar {
+    position: fixed;
+    z-index: 2;
+    cursor: default;
+    background-color: var(--black);
+    width: 100%;
+    height: 100px;
+}
+
+.MenuContainer {
+    position: fixed;
+    height: 100vh;
+    z-index: 99;
+    left: -100%;
+    background-color: var(--white);
+    color: var(--black);
+    transition: 650ms ease;
+}
+
+.MenuOpener {
+    padding: 5px;
+    color: var(--white);
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 300ms ease;
+}
+
+.MenuOpener:hover {
+    font-size: 1.7rem;
+    background-color: var(--white);
+    color: var(--black);
+    transform: rotateZ(90deg) scale(1.1);
+}
+
+.Exit {
+    margin: 20px;
+    padding: 5px;
+    color: var(--black);
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 300ms ease;
+}
+
+.Exit:hover {
+    font-size: 1.7rem;
+    background-color: var(--black);
+    color: var(--white);
+    transform: rotateZ(90deg) scale(1.2);
+}
+
+.MenuElement {
+    cursor: pointer;
+    width: 100%;
+    height: 75px;
+    color: var(--black);
+    font-weight: bolder;
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-right: 50px;
+    transition: 200ms ease-in-out;
+}
+
+.MenuElement:hover {
+    background-color: black;
+    color: var(--white);
+    opacity: .8;
+}
+
+.Transition {
+    position: fixed;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    transition: 500ms ease;
+    background-color: var(--black);
+}
+
+.Transition h1 {
+    color: #fff;
+    font-weight: bold;
+    font-size: 2.5rem;
+}
